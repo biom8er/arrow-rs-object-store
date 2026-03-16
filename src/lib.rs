@@ -579,9 +579,10 @@ pub use client::Certificate;
 mod config;
 
 mod tags;
-
-use serde::{Deserialize, Serialize};
 pub use tags::TagSet;
+
+#[cfg(feature = "serialize")]
+use serde::{Deserialize, Serialize};
 
 pub mod list;
 pub mod multipart;
@@ -1436,7 +1437,8 @@ pub struct ObjectMeta {
 }
 
 /// Options for a get request, such as range
-#[derive(Debug, Default, Clone, Serialize, Deserialize)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[derive(Debug, Default, Clone)]
 pub struct GetOptions {
     /// Request will succeed if the `ObjectMeta::e_tag` matches
     /// otherwise returning [`Error::Precondition`]
@@ -1491,7 +1493,7 @@ pub struct GetOptions {
     /// that need to pass context-specific information (like tracing spans) via trait methods.
     ///
     /// These extensions are ignored entirely by backends offered through this crate.
-    #[serde(skip)]
+    #[cfg_attr(feature = "serialize", serde(skip))]
     pub extensions: Extensions,
 }
 
@@ -1700,7 +1702,8 @@ impl<'a> GetResult<'a> {
 }
 
 /// Configure preconditions for the put operation
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub enum PutMode {
     /// Perform an atomic write operation, overwriting any object present at the provided path
     #[default]
@@ -1717,7 +1720,8 @@ pub enum PutMode {
 ///
 /// Stores will use differing combinations of `e_tag` and `version` to provide conditional
 /// updates, and it is therefore recommended applications preserve both
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UpdateVersion {
     /// The unique identifier for the newly created object
     ///

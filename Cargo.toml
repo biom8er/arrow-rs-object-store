@@ -74,8 +74,9 @@ wasm-bindgen-futures = "0.4.18"
 futures-channel = {version = "0.3", features = ["sink"]}
 
 [features]
-default = ["fs", "serde", "chrono/serde"]
-cloud = ["serde_json", "quick-xml", "hyper", "reqwest", "reqwest/stream", "base64", "rand", "ring", "http-body-util", "form_urlencoded", "serde_urlencoded", "tokio"]
+default = ["fs"]
+serialize = ["serde", "chrono/serde"]
+cloud = ["serialize", "serde_json", "quick-xml", "hyper", "reqwest", "reqwest/stream", "base64", "rand", "ring", "http-body-util", "form_urlencoded", "serde_urlencoded", "tokio"]
 azure = ["cloud", "httparse"]
 fs = ["walkdir", "tokio"]
 gcp = ["cloud", "rustls-pki-types"]

@@ -24,6 +24,7 @@ use std::{
 use super::Result;
 use bytes::Bytes;
 use futures_util::{Stream, TryStreamExt, stream::StreamExt};
+#[cfg(feature = "serialize")]
 use serde::{Deserialize, Serialize};
 
 #[cfg(any(feature = "azure", feature = "http"))]
@@ -190,7 +191,8 @@ fn merge_ranges(ranges: &[Range<u64>], coalesce: u64) -> Vec<Range<u64>> {
 /// range returned.
 ///
 /// [`GetResult`]: crate::GetResult
-#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum GetRange {
     /// Request a specific range of bytes
     ///

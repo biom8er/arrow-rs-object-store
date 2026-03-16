@@ -15,12 +15,16 @@
 // specific language governing permissions and limitations
 // under the License.
 
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 use url::form_urlencoded::Serializer;
 
 /// A collection of key value pairs used to annotate objects
 ///
 /// <https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-tagging.html>
 /// <https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-tags>
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Clone, Default, Eq, PartialEq)]
 pub struct TagSet(String);
 

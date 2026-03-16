@@ -57,7 +57,7 @@ rand = { version = "0.10", default-features = false, features = ["std", "std_rng
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls-native-roots", "http2"], optional = true }
 ring = { version = "0.17", default-features = false, features = ["std"], optional = true }
 rustls-pki-types = { version = "1.9", default-features = false, features = ["std"], optional = true }
-serde = { version = "1.0", default-features = false, features = ["derive"], optional = true }
+serde = { version = "1.0", default-features = false, features = ["derive", "alloc"], optional = true }
 serde_json = { version = "1.0", default-features = false, features = ["std"], optional = true }
 serde_urlencoded = { version = "0.7", optional = true }
 
@@ -75,8 +75,8 @@ futures-channel = {version = "0.3", features = ["sink"]}
 
 [features]
 default = ["fs"]
-serialize = ["serde", "chrono/serde"]
-cloud = ["serialize", "serde_json", "quick-xml", "hyper", "reqwest", "reqwest/stream", "base64", "rand", "ring", "http-body-util", "form_urlencoded", "serde_urlencoded", "tokio"]
+serde = ["dep:serde", "chrono/serde"]
+cloud = ["serde", "serde_json", "quick-xml", "hyper", "reqwest", "reqwest/stream", "base64", "rand", "ring", "http-body-util", "form_urlencoded", "serde_urlencoded", "tokio"]
 azure = ["cloud", "httparse"]
 fs = ["walkdir", "tokio"]
 gcp = ["cloud", "rustls-pki-types"]

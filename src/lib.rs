@@ -581,7 +581,7 @@ mod config;
 mod tags;
 pub use tags::TagSet;
 
-#[cfg(feature = "serialize")]
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
 pub mod list;
@@ -1437,7 +1437,7 @@ pub struct ObjectMeta {
 }
 
 /// Options for a get request, such as range
-#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Default, Clone)]
 pub struct GetOptions {
     /// Request will succeed if the `ObjectMeta::e_tag` matches
@@ -1493,7 +1493,7 @@ pub struct GetOptions {
     /// that need to pass context-specific information (like tracing spans) via trait methods.
     ///
     /// These extensions are ignored entirely by backends offered through this crate.
-    #[cfg_attr(feature = "serialize", serde(skip))]
+    #[cfg_attr(feature = "serde", serde(skip))]
     pub extensions: Extensions,
 }
 
@@ -1702,7 +1702,7 @@ impl<'a> GetResult<'a> {
 }
 
 /// Configure preconditions for the put operation
-#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub enum PutMode {
     /// Perform an atomic write operation, overwriting any object present at the provided path
@@ -1720,7 +1720,7 @@ pub enum PutMode {
 ///
 /// Stores will use differing combinations of `e_tag` and `version` to provide conditional
 /// updates, and it is therefore recommended applications preserve both
-#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UpdateVersion {
     /// The unique identifier for the newly created object
@@ -1741,6 +1741,7 @@ impl From<PutResult> for UpdateVersion {
 }
 
 /// Options for a put request
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Clone, Default)]
 pub struct PutOptions {
     /// Configure the [`PutMode`] for this operation
@@ -1752,6 +1753,7 @@ pub struct PutOptions {
     /// Provide a set of [`Attributes`]
     ///
     /// Implementations that don't support an attribute should return an error
+    #[cfg_attr(feature = "serde", serde(skip))]
     pub attributes: Attributes,
     /// Implementation-specific extensions. Intended for use by [`ObjectStore`] implementations
     /// that need to pass context-specific information (like tracing spans) via trait methods.
@@ -1759,6 +1761,7 @@ pub struct PutOptions {
     /// These extensions are ignored entirely by backends offered through this crate.
     ///
     /// They are also excluded from [`PartialEq`] and [`Eq`].
+    #[cfg_attr(feature = "serde", serde(skip))]
     pub extensions: Extensions,
 }
 

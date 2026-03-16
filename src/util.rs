@@ -24,6 +24,7 @@ use std::{
 use super::Result;
 use bytes::Bytes;
 use futures_util::{Stream, TryStreamExt, stream::StreamExt};
+use serde::{Deserialize, Serialize};
 
 #[cfg(any(feature = "azure", feature = "http"))]
 pub(crate) static RFC1123_FMT: &str = "%a, %d %h %Y %T GMT";
@@ -189,7 +190,7 @@ fn merge_ranges(ranges: &[Range<u64>], coalesce: u64) -> Vec<Range<u64>> {
 /// range returned.
 ///
 /// [`GetResult`]: crate::GetResult
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
 pub enum GetRange {
     /// Request a specific range of bytes
     ///
